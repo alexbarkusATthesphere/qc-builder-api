@@ -1,11 +1,20 @@
+import os  # noqa: F401
+import sys
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+THIS_FILE = Path(__file__).resolve()
+PROJECT_ROOT = THIS_FILE.parents[1]  # .../etls
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
-from app.core.config import settings
-from app.core.logging import setup_logging
+from fastapi import FastAPI  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+
+from app.api.v1.router import router as v1_router  # noqa: E402
+from app.core.config import settings  # noqa: E402
+from app.core.logging import setup_logging  # noqa: E402
 
 
 @asynccontextmanager
@@ -39,7 +48,7 @@ app.add_middleware(
 )
 
 # Mount routers
-from app.api.v1.router import router as v1_router  # noqa: E402
+
 
 app.include_router(v1_router, prefix=settings.API_V1_PREFIX)
 
