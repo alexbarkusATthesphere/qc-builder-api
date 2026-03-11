@@ -48,7 +48,11 @@ def seed() -> None:
             select(Template).where(Template.name == "Web Development")
         ).first()
         if existing:
-            logger.info("Template 'Web Development' already exists (id=%s). Skipping seed.", existing.id)
+            logger.info
+            (
+                "Template 'Web Development' already exists (id=%s). Skipping seed."
+                , existing.id
+            )
             return
 
         # =================================================================
@@ -70,11 +74,41 @@ def seed() -> None:
         # Status Definitions
         # =================================================================
         statuses_data = [
-            {"name": "Not Started", "color": "#6B7280", "display_order": 1, "is_default": True,  "is_terminal": False},
-            {"name": "In Progress", "color": "#3B82F6", "display_order": 2, "is_default": False, "is_terminal": False},
-            {"name": "In Review",   "color": "#8B5CF6", "display_order": 3, "is_default": False, "is_terminal": False},
-            {"name": "Blocked",     "color": "#EF4444", "display_order": 4, "is_default": False, "is_terminal": False},
-            {"name": "Complete",    "color": "#10B981", "display_order": 5, "is_default": False, "is_terminal": True},
+            {
+                "name": "Not Started"
+                , "color": "#6B7280"
+                , "display_order": 1
+                , "is_default": True
+                ,  "is_terminal": False
+            },
+            {
+                "name": "In Progress"
+                , "color": "#3B82F6"
+                , "display_order": 2
+                , "is_default": False
+                , "is_terminal": False
+            },
+            {
+                "name": "In Review"
+                , "color": "#8B5CF6"
+                , "display_order": 3
+                , "is_default": False
+                , "is_terminal": False
+            },
+            {
+                "name": "Blocked"
+                , "color": "#EF4444"
+                , "display_order": 4
+                , "is_default": False
+                , "is_terminal": False
+            },
+            {
+                "name": "Complete"
+                , "color": "#10B981"
+                , "display_order": 5
+                , "is_default": False
+                , "is_terminal": True
+            },
         ]
 
         status_map: dict[str, StatusDefinition] = {}
@@ -91,17 +125,17 @@ def seed() -> None:
         # =================================================================
         categories_config = {
             "Development": {
-                "description": "Code-level work: new features, pipelines, routes, bug fixes, and refactors.",
+                "description": "Code-level work: new features, pipelines, routes, bug fixes, and refactors.",  # noqa: E501
                 "display_order": 1,
                 "icon": "code",
                 "color": "#3B82F6",
                 "types": [
-                    ("New ETL Pipeline",     "Build a new ETL pipeline or add a new pipeline to an existing family."),
+                    ("New ETL Pipeline",     "Build a new ETL pipeline or add a new pipeline to an existing family."),  # noqa: E501
                     ("New API Route",        "Add a new endpoint or domain router to the API."),
-                    ("New Frontend Feature", "Build a new page, component, or feature in the Angular frontend."),
+                    ("New Frontend Feature", "Build a new page, component, or feature in the Angular frontend."),  # noqa: E501
                     ("Bug Fix",             "Fix a defect in existing functionality."),
                     ("Refactor",            "Restructure existing code without changing behavior."),
-                    ("Infrastructure",      "DevOps, CI/CD, Docker, VM setup, environment configuration."),
+                    ("Infrastructure",      "DevOps, CI/CD, Docker, VM setup, environment configuration."),  # noqa: E501
                 ],
             },
             "Communication": {
@@ -110,23 +144,23 @@ def seed() -> None:
                 "icon": "message-square",
                 "color": "#F59E0B",
                 "types": [
-                    ("Cross-Team Request",          "Request or coordinate work with another team."),
-                    ("Stakeholder Update",          "Provide a status update or demo to stakeholders."),
-                    ("Access / Provisioning Request", "Request access, credentials, licenses, or infrastructure."),
-                    ("Vendor Coordination",         "Coordinate with an external vendor or contractor."),
+                    ("Cross-Team Request",          "Request or coordinate work with another team."),  # noqa: E501
+                    ("Stakeholder Update",          "Provide a status update or demo to stakeholders."),  # noqa: E501
+                    ("Access / Provisioning Request", "Request access, credentials, licenses, or infrastructure."),  # noqa: E501
+                    ("Vendor Coordination",         "Coordinate with an external vendor or contractor."),  # noqa: E501
                 ],
             },
             "Documentation": {
-                "description": "Technical documentation, playbooks, READMEs, and reference material.",
+                "description": "Technical documentation, playbooks, READMEs, and reference material.",  # noqa: E501
                 "display_order": 3,
                 "icon": "file-text",
                 "color": "#10B981",
                 "types": [
                     ("README",         "Repository or project README file."),
-                    ("Technical Doc",  "Architecture docs, design docs, or technical specifications."),
+                    ("Technical Doc",  "Architecture docs, design docs, or technical specifications."),  # noqa: E501
                     ("Playbook",       "Operational playbook or runbook for a process."),
                     ("Program Document", "HSE program, policy, or compliance document."),
-                    ("Runbook",        "Step-by-step operational procedure for incident response or maintenance."),
+                    ("Runbook",        "Step-by-step operational procedure for incident response or maintenance."),  # noqa: E501
                 ],
             },
         }
@@ -162,7 +196,7 @@ def seed() -> None:
             name="SWIKI - Internal Knowledge Base",
             description=(
                 "Multi-stakeholder internal knowledge base and operations portal for The Sphere. "
-                "Includes ETL pipelines for data ingestion, a FastAPI backend, and an Angular frontend "
+                "Includes ETL pipelines for data ingestion, a FastAPI backend, and an Angular frontend "  # noqa: E501
                 "with role-gated portals for executives, security, HSE, and developers."
             ),
             owner="Web Development Team",
@@ -177,9 +211,9 @@ def seed() -> None:
         # Project Components
         # =================================================================
         components_data = [
-            ("ETL Pipelines", "Python ETL pipelines for ingesting data from Workforce, TeamUp, Tableau, and Excel sources."),
-            ("API",           "FastAPI REST backend serving 11 domain routers for the SWIKI portal."),
-            ("Frontend",      "Angular 21 SPA with stakeholder-driven architecture and Entra ID SSO."),
+            ("ETL Pipelines", "Python ETL pipelines for ingesting data from Workforce, TeamUp, Tableau, and Excel sources."),  # noqa: E501
+            ("API",           "FastAPI REST backend serving 11 domain routers for the SWIKI portal."),  # noqa: E501
+            ("Frontend",      "Angular 21 SPA with stakeholder-driven architecture and Entra ID SSO."),  # noqa: E501
         ]
 
         component_map: dict[str, ProjectComponent] = {}
@@ -208,7 +242,7 @@ def seed() -> None:
                 "component": "API",
                 "status": "Complete",
                 "priority": TaskPriority.HIGH,
-                "description": "Full CRUD for EAP staff assignments including viewer endpoint, filters, swap, drop, and assign operations.",
+                "description": "Full CRUD for EAP staff assignments including viewer endpoint, filters, swap, drop, and assign operations.",  # noqa: E501
             },
             {
                 "title": "Build WFR pipeline base class",
@@ -217,7 +251,7 @@ def seed() -> None:
                 "component": "ETL Pipelines",
                 "status": "Complete",
                 "priority": TaskPriority.HIGH,
-                "description": "Shared base class for all Workforce Report pipelines with scrape, load, cleanse, write, and cleanup steps.",
+                "description": "Shared base class for all Workforce Report pipelines with scrape, load, cleanse, write, and cleanup steps.",  # noqa: E501
             },
             {
                 "title": "Security employee portal (sec-emp)",
@@ -226,7 +260,7 @@ def seed() -> None:
                 "component": "Frontend",
                 "status": "In Progress",
                 "priority": TaskPriority.HIGH,
-                "description": "Read-only portal for frontline security employees with minimal layout, post orders, announcements, and micro trainings.",
+                "description": "Read-only portal for frontline security employees with minimal layout, post orders, announcements, and micro trainings.",  # noqa: E501
             },
             {
                 "title": "Notification system with inbox and receipts",
@@ -235,7 +269,7 @@ def seed() -> None:
                 "component": "API",
                 "status": "Complete",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Notification authoring, targeting, inbox, read/acknowledge tracking, and CSV receipt export.",
+                "description": "Notification authoring, targeting, inbox, read/acknowledge tracking, and CSV receipt export.",  # noqa: E501
             },
             {
                 "title": "Post orders role-based viewer",
@@ -244,7 +278,7 @@ def seed() -> None:
                 "component": "Frontend",
                 "status": "In Progress",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Role-gated post order viewer where officers see their assigned area and supervisors see all.",
+                "description": "Role-gated post order viewer where officers see their assigned area and supervisors see all.",  # noqa: E501
             },
             {
                 "title": "Containerize API and ETL runner with Docker",
@@ -253,7 +287,7 @@ def seed() -> None:
                 "component": None,
                 "status": "Not Started",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Docker Compose setup to run API and ETL runner in separate containers with a shared database volume.",
+                "description": "Docker Compose setup to run API and ETL runner in separate containers with a shared database volume.",  # noqa: E501
             },
             # Communication tasks
             {
@@ -263,7 +297,7 @@ def seed() -> None:
                 "component": None,
                 "status": "Blocked",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Need 1Password vault provisioned for the team to replace plaintext .env credentials.",
+                "description": "Need 1Password vault provisioned for the team to replace plaintext .env credentials.",  # noqa: E501
             },
             {
                 "title": "Request Docker installation for local devices and VMs",
@@ -272,7 +306,7 @@ def seed() -> None:
                 "component": None,
                 "status": "Blocked",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Docker Desktop needs IT approval and installation on dev machines and the production VM.",
+                "description": "Docker Desktop needs IT approval and installation on dev machines and the production VM.",  # noqa: E501
             },
             {
                 "title": "Coordinate with InfoSec on SSL certificates",
@@ -281,7 +315,7 @@ def seed() -> None:
                 "component": None,
                 "status": "In Progress",
                 "priority": TaskPriority.LOW,
-                "description": "Work with information security to provision SSL certificates for local HTTPS development.",
+                "description": "Work with information security to provision SSL certificates for local HTTPS development.",  # noqa: E501
             },
             {
                 "title": "Demo EAP viewer to security leadership",
@@ -290,7 +324,7 @@ def seed() -> None:
                 "component": None,
                 "status": "Complete",
                 "priority": TaskPriority.HIGH,
-                "description": "Present the EAP viewer functionality to security directors for feedback before wider rollout.",
+                "description": "Present the EAP viewer functionality to security directors for feedback before wider rollout.",  # noqa: E501
             },
             # Documentation tasks
             {
@@ -300,7 +334,7 @@ def seed() -> None:
                 "component": "ETL Pipelines",
                 "status": "Complete",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Comprehensive README covering all three pipeline families (EOD, WFR, EAP), architecture, database tables, and configuration.",
+                "description": "Comprehensive README covering all three pipeline families (EOD, WFR, EAP), architecture, database tables, and configuration.",  # noqa: E501
             },
             {
                 "title": "SWIKI API README",
@@ -309,7 +343,7 @@ def seed() -> None:
                 "component": "API",
                 "status": "Complete",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Full API documentation covering all 11 domain routers, architecture, database, configuration, and development workflow.",
+                "description": "Full API documentation covering all 11 domain routers, architecture, database, configuration, and development workflow.",  # noqa: E501
             },
             {
                 "title": "Swiki Frontend README",
@@ -318,7 +352,7 @@ def seed() -> None:
                 "component": "Frontend",
                 "status": "Complete",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Frontend README covering stakeholder portal architecture, auth flow, routing, theming, and adding new stakeholders.",
+                "description": "Frontend README covering stakeholder portal architecture, auth flow, routing, theming, and adding new stakeholders.",  # noqa: E501
             },
             {
                 "title": "EAP post assignment playbook",
@@ -327,7 +361,7 @@ def seed() -> None:
                 "component": None,
                 "status": "Not Started",
                 "priority": TaskPriority.LOW,
-                "description": "Operational playbook for security managers explaining how to use the EAP viewer to manage staff post assignments.",
+                "description": "Operational playbook for security managers explaining how to use the EAP viewer to manage staff post assignments.",  # noqa: E501
             },
             {
                 "title": "HSE emergency preparedness program document",
@@ -336,7 +370,7 @@ def seed() -> None:
                 "component": "Frontend",
                 "status": "In Review",
                 "priority": TaskPriority.MEDIUM,
-                "description": "Digital version of the HSE emergency preparedness program for the HSE portal.",
+                "description": "Digital version of the HSE emergency preparedness program for the HSE portal.",  # noqa: E501
             },
         ]
 
@@ -344,7 +378,7 @@ def seed() -> None:
             category = category_map[task_data["category"]]
             task_type = type_map.get(task_data["type"])
             status_def = status_map[task_data["status"]]
-            component = component_map.get(task_data["component"]) if task_data["component"] else None
+            component = component_map.get(task_data["component"]) if task_data["component"] else None  # noqa: E501
 
             task = Task(
                 project_id=project.id,
