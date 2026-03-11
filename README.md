@@ -402,7 +402,7 @@ QC Builder is a standalone project tracking tool, but it sits alongside the broa
 | Directory | Description |
 |-----------|-------------|
 | `qc-builder` | Angular frontend (QC Builder dashboard) |
-| `swiki` | Angular frontend (SWIKI operations portal) |
+| `swiki` | Angular frontend (mySphere Dev operations portal) |
 | `swiki-api` | FastAPI backend for SWIKI |
 | `etls` | ETL pipelines for ingesting external data sources |
 
