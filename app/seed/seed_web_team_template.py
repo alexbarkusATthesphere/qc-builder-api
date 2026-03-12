@@ -574,6 +574,60 @@ def seed() -> None:
                 "env": TEST, "start": None, "end": None,
                 "description": "Once the dev environment is fully working on the VM with Docker, database connectivity, and InfoSec clearance, stand up a test environment connected to real data sources.",
             },
+            {
+                "title": "Scaffold test environment frontend repo (mysphere-test)",
+                "cat": "Development", "typ": "Infrastructure", "comp": "Frontend", "st": "Complete", "pri": MED,
+                "env": TEST, "start": "2026-02-17", "end": "2026-02-17",
+                "description": "Created the mysphere-test repository with base folder structure and initial project files. Repo scaffolded but not yet stood up or connected to any environment.",
+            },
+            {
+                "title": "Scaffold test environment API repo (mysphere-api-test)",
+                "cat": "Development", "typ": "Infrastructure", "comp": "API", "st": "In Progress", "pri": MED,
+                "env": TEST, "start": "2026-02-17", "end": None,
+                "description": "Created the mysphere-api test repository with initial project structure, core files, mock database config, and wiki_users and employee slices with passing tests. Repo scaffolded but not yet stood up or connected to any environment.",
+            },
+            {
+                "title": "Translate Angular frontend modules to Nx for test environment",
+                "cat": "Development", "typ": "Refactor", "comp": "Frontend", "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Migrate the pure Angular frontend into the Nx monorepo architecture for the test environment. Can begin with fake data before InfoSec clears the VM, but real data requires clearance first.",
+            },
+            {
+                "title": "Translate API modules to test environment architecture",
+                "cat": "Development", "typ": "Refactor", "comp": "API", "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Port the FastAPI backend and all domain routers from the dev environment into the test environment repo. Must align with the Nx workspace structure and new test architecture.",
+            },
+            {
+                "title": "Translate ETL pipelines to test environment",
+                "cat": "Development", "typ": "Refactor", "comp": "ETL Pipelines", "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Port all ETL pipeline families (EOD, WFR, EAP) into the test environment. Pipelines will initially run against fake data until InfoSec clears the VM and the database is provisioned.",
+            },
+            {
+                "title": "InfoSec security scan of test environment VM",
+                "cat": "Development", "typ": "Infrastructure", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Have InfoSec scan the test environment VM to ensure all standards are met for securing data being served. Must be completed before any real data enters the test environment.",
+            },
+            {
+                "title": "Address InfoSec action items from test environment scan",
+                "cat": "Development", "typ": "Infrastructure", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Remediate any findings from the InfoSec test environment scan. Required before the test environment can serve real data.",
+            },
+            {
+                "title": "Reconnect dev environment under provisioned test infrastructure",
+                "cat": "Development", "typ": "Infrastructure", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": DEV, "start": None, "end": None,
+                "description": "Once other teams provision the database, TLS certs, and VM virtualization, connect the dev environment under the new infrastructure and verify everything works under the new connections.",
+            },
+            {
+                "title": "InfoSec due diligence scan of dev environment",
+                "cat": "Development", "typ": "Infrastructure", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": DEV, "start": None, "end": None,
+                "description": "After reconnecting the dev environment to provisioned infrastructure, have InfoSec scan for due diligence. Will identify remaining flags for what still needs to be addressed before test environment go-live.",
+            },
 
             # -----------------------------------------------------------------
             # COMMUNICATION
@@ -613,6 +667,36 @@ def seed() -> None:
                 "cat": "Communication", "typ": "Cross-Team Request", "comp": None, "st": "Not Started", "pri": HIGH,
                 "env": TEST, "start": None, "end": None,
                 "description": "After the scan, coordinate with InfoSec to understand and prioritize the remediation items. Must be resolved before real data enters the environment.",
+            },
+            {
+                "title": "Request properly signed TLS certificates for test environment",
+                "cat": "Communication", "typ": "Access / Provisioning Request", "comp": None, "st": "Blocked", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Another team is assisting with provisioning properly signed TLS certificate files for the test environment. Required before the test environment can serve HTTPS traffic with real certs.",
+            },
+            {
+                "title": "Request VM virtualization for test environment",
+                "cat": "Communication", "typ": "Access / Provisioning Request", "comp": None, "st": "Blocked", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Another team is assisting with virtualization of the test environment VM. Required infrastructure prerequisite before the test environment can be fully stood up.",
+            },
+            {
+                "title": "Request database provisioning for test environment",
+                "cat": "Communication", "typ": "Access / Provisioning Request", "comp": None, "st": "Blocked", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Another team is assisting with provisioning the database so that tables and schemas can be created for the test environment. Prerequisite for connecting any services to real data.",
+            },
+            {
+                "title": "Coordinate with InfoSec for test environment VM scan",
+                "cat": "Communication", "typ": "Cross-Team Request", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": TEST, "start": None, "end": None,
+                "description": "Schedule the InfoSec security scan of the test environment VM. Must ensure all standards are met for securing data before real data is introduced.",
+            },
+            {
+                "title": "Coordinate InfoSec due diligence scan of dev environment post-provisioning",
+                "cat": "Communication", "typ": "Cross-Team Request", "comp": None, "st": "Not Started", "pri": HIGH,
+                "env": DEV, "start": None, "end": None,
+                "description": "Once the dev environment is reconnected under provisioned infrastructure, coordinate with InfoSec for a due diligence scan to identify remaining flags before test environment go-live.",
             },
 
             # -----------------------------------------------------------------
