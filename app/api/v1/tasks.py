@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlmodel import Session
 
 from app.api.deps import get_db
-from app.models.db.task import TaskPriority
+from app.models.db.task import TaskEnvironment, TaskPriority
 from app.models.schemas.task import (
     TaskCommentCreate,
     TaskCommentRead,
@@ -32,6 +32,7 @@ def list_tasks(
     component_id: int | None = None,
     assignee: str | None = None,
     priority: TaskPriority | None = None,
+    environment: TaskEnvironment | None = None,
     db: Session = Depends(get_db),
 ):
     return task_repo.get_tasks(
@@ -43,6 +44,7 @@ def list_tasks(
         component_id=component_id,
         assignee=assignee,
         priority=priority,
+        environment=environment,
     )
 
 
@@ -54,9 +56,13 @@ def create_task(data: TaskCreate, db: Session = Depends(get_db)):
 @router.get("/summary", response_model=TaskSummary)
 def get_task_summary(
     project_id: int = Query(..., description="Required: project to summarize"),
+    environment: TaskEnvironment | None = Query(
+        default=None,
+        description="Optional: scope summary to a specific environment",
+    ),
     db: Session = Depends(get_db),
 ):
-    return task_repo.get_task_summary(db, project_id)
+    return task_repo.get_task_summary(db, project_id, environment=environment)
 
 
 @router.get("/{task_id}", response_model=TaskDetailRead)

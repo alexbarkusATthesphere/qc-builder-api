@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlmodel import Session, func, select
 
 from app.models.db.project import ProjectComponent
-from app.models.db.task import Task, TaskComment, TaskHistory, TaskPriority
+from app.models.db.task import Task, TaskComment, TaskEnvironment, TaskHistory, TaskPriority
 from app.models.db.template import StatusDefinition, TaskCategory
 from app.models.schemas.task import (
     TaskCommentCreate,
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 # Fields that are tracked in task_history when updated
 AUDITED_FIELDS = {
     "category_id", "type_id", "status_id", "component_id",
-    "title", "description", "assignee", "priority",
+    "title", "description", "assignee", "priority", "environment",
     "start_date", "due_date",
 }
 
@@ -38,6 +38,7 @@ def get_tasks(
     component_id: int | None = None,
     assignee: str | None = None,
     priority: TaskPriority | None = None,
+    environment: TaskEnvironment | None = None,
 ) -> list[Task]:
     stmt = select(Task).where(Task.project_id == project_id)
     if category_id is not None:
@@ -52,6 +53,8 @@ def get_tasks(
         stmt = stmt.where(Task.assignee == assignee)
     if priority is not None:
         stmt = stmt.where(Task.priority == priority)
+    if environment is not None:
+        stmt = stmt.where(Task.environment == environment)
     stmt = stmt.order_by(Task.created_at.desc())
     return list(session.exec(stmt).all())
 
@@ -214,52 +217,69 @@ def delete_comment(session: Session, comment_id: int) -> bool:
 # Task Summary
 # ---------------------------------------------------------------------------
 
-def get_task_summary(session: Session, project_id: int) -> dict:
-    """Aggregate task counts by status, category, component, and priority."""
+def get_task_summary(
+    session: Session,
+    project_id: int,
+    *,
+    environment: TaskEnvironment | None = None,
+) -> dict:
+    """Aggregate task counts by status, category, component, priority, and environment.
+
+    When *environment* is provided the counts are scoped to that environment only.
+    """
+
+    def _base_where(stmt):
+        """Apply shared project (and optional environment) filter."""
+        stmt = stmt.where(Task.project_id == project_id)
+        if environment is not None:
+            stmt = stmt.where(Task.environment == environment)
+        return stmt
 
     # By status
-    status_stmt = (
+    status_stmt = _base_where(
         select(StatusDefinition.name, func.count(Task.id))
         .join(StatusDefinition, Task.status_id == StatusDefinition.id)
-        .where(Task.project_id == project_id)
-        .group_by(StatusDefinition.name)
-    )
+    ).group_by(StatusDefinition.name)
     by_status = {name: count for name, count in session.exec(status_stmt).all()}
 
     # By category
-    cat_stmt = (
+    cat_stmt = _base_where(
         select(TaskCategory.name, func.count(Task.id))
         .join(TaskCategory, Task.category_id == TaskCategory.id)
-        .where(Task.project_id == project_id)
-        .group_by(TaskCategory.name)
-    )
+    ).group_by(TaskCategory.name)
     by_category = {name: count for name, count in session.exec(cat_stmt).all()}
 
     # By component (tasks without a component are grouped as "Unassigned")
-    comp_stmt = (
+    comp_stmt = _base_where(
         select(ProjectComponent.name, func.count(Task.id))
         .join(ProjectComponent, Task.component_id == ProjectComponent.id)
-        .where(Task.project_id == project_id, Task.component_id.isnot(None))
-        .group_by(ProjectComponent.name)
-    )
+    ).where(Task.component_id.isnot(None)).group_by(ProjectComponent.name)
     by_component = {name: count for name, count in session.exec(comp_stmt).all()}
 
     # Count tasks with no component
-    unassigned_stmt = (
+    unassigned_stmt = _base_where(
         select(func.count(Task.id))
-        .where(Task.project_id == project_id, Task.component_id.is_(None))
-    )
+    ).where(Task.component_id.is_(None))
     unassigned = session.exec(unassigned_stmt).one()
     if unassigned:
         by_component["Unassigned"] = unassigned
 
     # By priority
-    priority_stmt = (
+    priority_stmt = _base_where(
         select(Task.priority, func.count(Task.id))
-        .where(Task.project_id == project_id)
-        .group_by(Task.priority)
-    )
+    ).group_by(Task.priority)
     by_priority = {str(priority): count for priority, count in session.exec(priority_stmt).all()}
+
+    # By environment
+    env_stmt = (
+        select(Task.environment, func.count(Task.id))
+        .where(Task.project_id == project_id)
+        .group_by(Task.environment)
+    )
+    by_environment = {}
+    for env_val, count in session.exec(env_stmt).all():
+        label = str(env_val) if env_val is not None else "Unassigned"
+        by_environment[label] = count
 
     total = sum(by_status.values())
 
@@ -269,4 +289,5 @@ def get_task_summary(session: Session, project_id: int) -> dict:
         "by_category": by_category,
         "by_component": by_component,
         "by_priority": by_priority,
+        "by_environment": by_environment,
     }

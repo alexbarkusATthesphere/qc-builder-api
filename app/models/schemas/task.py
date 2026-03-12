@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 from pydantic import BaseModel
 
-from app.models.db.task import TaskPriority
+from app.models.db.task import TaskEnvironment, TaskPriority
 
 # ---------------------------------------------------------------------------
 # Task Comments
@@ -54,6 +54,7 @@ class TaskCreate(BaseModel):
     description: str | None = None
     assignee: str | None = None
     priority: TaskPriority = TaskPriority.MEDIUM
+    environment: TaskEnvironment | None = None
     start_date: date | None = None
     due_date: date | None = None
 
@@ -67,6 +68,7 @@ class TaskUpdate(BaseModel):
     description: str | None = None
     assignee: str | None = None
     priority: TaskPriority | None = None
+    environment: TaskEnvironment | None = None
     start_date: date | None = None
     due_date: date | None = None
     changed_by: str = "system"
@@ -83,6 +85,7 @@ class TaskRead(BaseModel):
     description: str | None
     assignee: str | None
     priority: TaskPriority
+    environment: TaskEnvironment | None
     start_date: date | None
     due_date: date | None
     completed_at: datetime | None
@@ -106,3 +109,4 @@ class TaskSummary(BaseModel):
     by_category: dict[str, int] = {}
     by_component: dict[str, int] = {}
     by_priority: dict[str, int] = {}
+    by_environment: dict[str, int] = {}

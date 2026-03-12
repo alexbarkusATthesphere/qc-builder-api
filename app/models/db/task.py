@@ -12,6 +12,12 @@ class TaskPriority(StrEnum):
     CRITICAL = "critical"
 
 
+class TaskEnvironment(StrEnum):
+    DEV = "dev"
+    TEST = "test"
+    PROD = "prod"
+
+
 class Task(SQLModel, table=True):
     __tablename__ = "tasks"
 
@@ -25,6 +31,7 @@ class Task(SQLModel, table=True):
     description: str | None = Field(default=None)
     assignee: str | None = Field(default=None, max_length=200)
     priority: TaskPriority = Field(default=TaskPriority.MEDIUM)
+    environment: TaskEnvironment | None = Field(default=None, max_length=10, index=True)
     start_date: date | None = Field(default=None)
     due_date: date | None = Field(default=None)
     completed_at: datetime | None = Field(default=None)
