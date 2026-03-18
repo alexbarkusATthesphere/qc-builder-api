@@ -76,8 +76,8 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
 
     return TaskDetailRead(
         **task.model_dump(),
-        comments=comments,
-        recent_history=recent_history,
+        comments=[c.model_dump() for c in comments],
+        recent_history=[h.model_dump() for h in recent_history],
     )
 
 
